@@ -41,7 +41,7 @@
 
 (fact "Non-multipart shows info message"
       (parse-multipart-mixed {:content-type "none"})
-      => {})
+      => '())
 
 (fact "Input size is limited"
       (let [function (wrap-multipart-mixed (fn [req] nil) 100)]

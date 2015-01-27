@@ -57,7 +57,7 @@
   "Parse multipart/mixed if in the correct format"
   [request & [limit]]
   (if (mixed-multipart? request)
-    (parse-request request limit) {}))
+    (parse-request request limit) '()))
 
 (defn wrap-multipart-mixed
   "Places an additional key of :multiparts into the request map.
