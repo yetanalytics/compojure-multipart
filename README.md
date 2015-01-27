@@ -6,7 +6,7 @@ Clojure ring / compojure middleware that knows how to parse a multipart/mixed mi
 
 ![Clojars latest version](https://clojars.org/com.yetanalytics/multipart/latest-version.svg "Clojars latest version")
 
-Add `[com.floatbackwards/multipart "0.1.0-SNAPSHOT"]` to your project.clj
+Add `[com.yetanalytics/multipart "0.1.0-SNAPSHOT"]` to your project.clj
 
 Clojars project page: [multipart](https://clojars.org/com.yetanalytics/multipart)
 
