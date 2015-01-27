@@ -4,11 +4,11 @@ Clojure ring / compojure middleware that knows how to parse a multipart/mixed mi
 
 # Add to your project #
 
-![Clojars latest version](https://clojars.org/com.floatbackwards/multipart/latest-version.svg "Clojars latest version")
+![Clojars latest version](https://clojars.org/com.yetanalytics/multipart/latest-version.svg "Clojars latest version")
 
-Add `[com.floatbackwards/multipart "0.0.6"]` to your project.clj
+Add `[com.floatbackwards/multipart "0.1.0-SNAPSHOT"]` to your project.clj
 
-Clojars project page: [multipart](https://clojars.org/com.floatbackwards/multipart)
+Clojars project page: [multipart](https://clojars.org/com.yetanalytics/multipart)
 
 # Use with #
 
@@ -28,18 +28,22 @@ or
 
 If the request `content-type` header contains the content type of `multipart/mixed` this will put a key of `:multiparts` into the request map. Otherwise does nothing.
 
-This key will contain a map of content type to seq of streams for each part of the message with that type.
+This key will contain a sequence of maps with :content-type, :headers (all headers), and :input-stream for each part of the message.
 
 For example a message containing three parts: 2 jpeg images and 1 text/plan would give us the following request map.
 
     {
     :body "some multipart/mixed message body - this is what we parse"
     ... 
-      :multiparts {
-        "image/jpeg" : (<stream1> <stream2>),
-        "text/plain" : (<stream1>)
-      }
-    ...}
+      :multiparts ({:content-type "image/jpeg"
+                    :headers {"Content-Type" "image/jpeg"
+                              "X-Some-Header" "whatevs"}
+                    :input-stream <stream1>}
+                   {:content-type "text/plain"
+                    :headers {"Content-Type" "text/plain"}
+                    :input-stream <stream2>})
+    ...
+    }
 
 Each of the parsed elements is available as a stream that can be split, slurped or whatever else you fancy.
 
