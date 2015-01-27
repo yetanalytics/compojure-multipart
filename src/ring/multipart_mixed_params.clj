@@ -12,19 +12,27 @@
   (if-let [content-type (:content-type request)]
     (.startsWith content-type "multipart/mixed")))
 
+(defn- parse-part-headers [part]
+  (let [header-enum (.getAllHeaders part)]
+    (into {}
+          (for [header (enumeration-seq header-enum)]
+            [(.getName header) (.getValue header)]))))
+
 (defn- parts-sequence
   "Returns a lazy sequence of the parts from a MimeMultipart request"
   ([multipart] (parts-sequence multipart 0))
   ([multipart n]
      (if (< n (.getCount multipart))
        (let [part (.getBodyPart multipart n)]
-         (lazy-seq (cons {(.getContentType part) (.getInputStream part)}
+         (lazy-seq (cons {:input-stream (.getInputStream part)
+                          :content-type (.getContentType part)
+                          :headers (parse-part-headers part)}
                    (parts-sequence multipart (inc n))))))))
 
-(defn- merge-two [a [k v]]
+(defn- ^:deprecated merge-two [a [k v]]
   (update-in a [k] conj v))
 
-(defn- merge-matches [list]
+(defn- ^:deprecated merge-matches [list]
   (reduce #(merge-two % (flatten (seq %2))) {} list))
 
 (defn- input-stream [request & [limit]]
@@ -42,7 +50,7 @@
   (let [multipart  (MimeMultipart. (ByteArrayDataSource. (input-stream request limit)
                                                          "multipart/mixed"))]
     (if (.isComplete multipart)
-      (merge-matches (parts-sequence multipart))
+      (parts-sequence multipart)
       (throw (javax.mail.MessagingException. "Incomplete request received")))))
 
 (defn parse-multipart-mixed

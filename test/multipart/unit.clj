@@ -14,10 +14,14 @@
    :content-type "multipart/mixed"})
 
 (defn get-part [n type req]
-  (slurp (nth (req type) n)))
+  (slurp (:input-stream (nth (filter #(= type (:content-type %)) req) n))))
+
+(defn get-part-headers [n type req]
+  (:headers (nth (filter #(= type (:content-type %)) req) n)))
 
 (defn get-plain [n req]
   (get-part n "text/plain" req))
+
 
 (defn gif?
   [xs]
@@ -31,8 +35,8 @@
 
 (fact "Many parts gives sequences of parts in map"
       (let [parts (parse-multipart-mixed (multipart "multi.part"))]
-        (get-plain 0 parts) => "single part 2"
-        (get-plain 1 parts) => "single part 1"
+        (get-plain 0 parts) => "single part 1"
+        (get-plain 1 parts) => "single part 2"
         (gif? (get-part 0 "image/gif" parts)) => truthy))
 
 (fact "Non-multipart shows info message"
@@ -46,3 +50,9 @@
 
 (fact "Final boundary is required"
       (parse-multipart-mixed (multipart "multi-missing-final-boundary.part")) => (throws javax.mail.MessagingException))
+
+(fact "Gets part headers"
+      (let [parts (parse-multipart-mixed (multipart "multi.part"))]
+        (get-part-headers 0 "text/plain" parts)
+        => {"Content-type" "text/plain"
+            "X-Some-Header" "foobar"}))
