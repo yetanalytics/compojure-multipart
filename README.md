@@ -1,5 +1,7 @@
 # Ring middleware for multipart/mixed #
 
+[![Build Status](https://travis-ci.org/yetanalytics/compojure-multipart.svg?branch=master)](https://travis-ci.org/yetanalytics/compojure-multipart)
+
 Clojure ring / compojure middleware that knows how to parse a multipart/mixed mime type message into the request map.
 
 # Add to your project #
@@ -19,7 +21,7 @@ then
     (defroutes main-routes (wrap-multipart-mixed
        (POST "/data" req "OK")))
 
-or 
+or
 
     (def app
       (handler/site
@@ -34,7 +36,7 @@ For example a message containing three parts: 2 jpeg images and 1 text/plan woul
 
     {
     :body "some multipart/mixed message body - this is what we parse"
-    ... 
+    ...
       :multiparts ({:content-type "image/jpeg"
                     :headers {"Content-Type" "image/jpeg"
                               "X-Some-Header" "whatevs"}
