@@ -3,20 +3,15 @@
 
   :url "https://github.com/yetanalytics/compojure-multipart"
 
-  :dependencies [[org.clojure/clojure "1.7.0-alpha1"]
-                 [midje "1.6.3"]
-                 [org.apache.commons/commons-email "1.3.3"]
-                 [commons-fileupload/commons-fileupload "1.3.1"]
-                 [bultitude "0.2.6"]]
-  :profiles {:dev {:plugins [[lein-midje "2.0.4"]]}}
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.apache.commons/commons-email "1.4"]
+                 [commons-fileupload/commons-fileupload "1.3.2"]
+                 [bultitude "0.2.8"]]
+  :profiles {:dev {:dependencies [[midje "1.8.3"]]
+                   :plugins [[lein-midje "2.0.4"]]}}
 
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-
-  :plugins [[lein-release "1.0.5"]]
-
-  :lein-release {:release-tasks [:clean :uberjar :pom]
-                 :clojars-url "clojars@clojars.org:"}
 
   :uberjar-name "multipart.jar"
 
