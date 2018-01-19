@@ -26,6 +26,7 @@
        (let [part (.getBodyPart multipart n)]
          (lazy-seq (cons {:input-stream (.getInputStream part)
                           :content-type (.getContentType part)
+                          :content-length (.getSize part)
                           :headers (parse-part-headers part)}
                    (parts-sequence multipart (inc n))))))))
 

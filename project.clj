@@ -1,4 +1,4 @@
-(defproject com.yetanalytics/multipart "0.1.1"
+(defproject com.yetanalytics/multipart "0.1.2"
   :description "Ring middleware for parsing multipart/mixed requests"
 
   :url "https://github.com/yetanalytics/compojure-multipart"
